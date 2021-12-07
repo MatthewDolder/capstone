@@ -1,0 +1,62 @@
+---
+title: "Analysis Draft"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+```{r}
+library(readr)
+library(dplyr)
+```
+
+
+```{r}
+mrip_catch_wave_2020 <- read_csv("data/mrip_catch_wave_2020.csv")
+View(mrip_catch_wave_2020)
+
+Recent_Harmful_Algal_Bloom_HAB_Events <- read_csv("data/Recent_Harmful_Algal_Bloom_(HAB)_Events.csv")
+View(Recent_Harmful_Algal_Bloom_HAB_Events)
+
+```
+
+```{r}
+head(mrip_catch_wave_2020)
+head(Recent_Harmful_Algal_Bloom_HAB_Events)
+```
+
+```{r}
+#https://stackoverflow.com/questions/33221425/how-do-i-group-my-date-variable-into-month-year-in-r
+Recent_Harmful_Algal_Bloom_HAB_Events %>%
+    mutate(date=as.Date(SAMPLE_DATE)) %>%
+    mutate(month=format(date, "%m")
+           ,year=format(date,"%Y")) %>%
+    filter(year == "2020") %>%
+    mutate(wave=case_when(month=="01" ~ "JANUARY/FEBRUARY",
+                          month=="02" ~ "JANUARY/FEBRUARY",
+                          month=="03" ~ "MARCH/APRIL",
+                          month=="04" ~ "MARCH/APRIL",
+                          month=="05" ~ "MAY/JUNE",
+                          month=="06" ~ "MAY/JUNE",
+                          month=="07" ~ "JULY/AUGUST",
+                          month=="08" ~ "JULY/AUGUST",
+                          month=="09" ~ "SEPTEMBER/OCTOBER",
+                          month=="10" ~ "SEPTEMBER/OCTOBER",
+                          month=="11" ~ "NOVEMBER/DECEMBER",
+                          month=="12" ~ "NOVEMBER/DECEMBER",
+                          )) %>%
+    select(c(year,wave,COUNT_)) %>% 
+    group_by(year,wave) %>%
+    summarize(brevis_count = sum(COUNT_))
+```
+
+
