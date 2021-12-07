@@ -238,110 +238,64 @@ The following objects are masked from 㤼㸱package:base㤼㸲:
 
     intersect, setdiff, setequal, union</code></pre>
 <!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc291cmNlKFwiY3VzdG9tX2Z1bmN0aW9ucy5SXCIpXG5gYGAifQ== -->
+<pre class="r"><code>source(&quot;custom_functions.R&quot;)</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubXJpcF9jYXRjaF93YXZlXzIwMjAgPC0gcmVhZF9jc3YoXCJkYXRhL21yaXBfY2F0Y2hfd2F2ZV8yMDIwLmNzdlwiKVxuVmlldyhtcmlwX2NhdGNoX3dhdmVfMjAyMClcblxuUmVjZW50X0hhcm1mdWxfQWxnYWxfQmxvb21fSEFCX0V2ZW50cyA8LSByZWFkX2NzdihcImRhdGEvUmVjZW50X0hhcm1mdWxfQWxnYWxfQmxvb21fKEhBQilfRXZlbnRzLmNzdlwiKVxuVmlldyhSZWNlbnRfSGFybWZ1bF9BbGdhbF9CbG9vbV9IQUJfRXZlbnRzKVxuXG5gYGAifQ== -->
-<pre class="r"><code>mrip_catch_wave_2020 &lt;- read_csv(&quot;data/mrip_catch_wave_2020.csv&quot;)
-View(mrip_catch_wave_2020)
-
-Recent_Harmful_Algal_Bloom_HAB_Events &lt;- read_csv(&quot;data/Recent_Harmful_Algal_Bloom_(HAB)_Events.csv&quot;)
-View(Recent_Harmful_Algal_Bloom_HAB_Events)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubXJpcF9jYXRjaF93YXZlIDwtIG15SW1wb3J0X21yaXAoKVxuaGFiX2NvdW50X3dhdmUgPC0gbXlJbXBvcnRfaGFiKClcblxuYGBgIn0= -->
+<pre class="r"><code>mrip_catch_wave &lt;- myImport_mrip()
+hab_count_wave &lt;- myImport_hab()
 </code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChtcmlwX2NhdGNoX3dhdmVfMjAyMClcbmBgYCJ9 -->
-<pre class="r"><code>head(mrip_catch_wave_2020)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NiwibmNvbCI6MzEsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiNiB4IDMxIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQnUxV3ZXL1RRQlMvcG5HK3FxYWdkbUJBMUFOREdacXFyUkFkK01pbHNZbkJkWXFUb0hZeWw4UnBMQkk3c3AybURKVTZNVE94TW9FUU93UC9BQk1WQ3lNckRFeU1pS0hoTHI0enJna2xwUlVzdFpTOCsvMSs3NzE3Nys3OG9lWTNsbE1iS1FEQU9JZ0NEb3h6ZUFoaXErdUxTMWVYQUloR01CckRTcExZSGV3MWpRZXorSGVPdUZHQkV5VUZ5aWNIQUtSSjF1eXpKNlFJTUtwbGNiZStlbUJVRytvaWZnY3FDNktRTzAzSU9ycmdUVGVxRFZXV0xoVXI1UUlQeXpKVXl0THFQMlpaRDNPMHhoRnRlSFZGdWFoS2VYaWFrRllHOS9kMU1oMnpPWER0dzZ1NVlYWkZlZk5yWmVjcmlwUVhjS3VpSk9SNVVTb1YvaVJNS0JXMUpQQ2xBbFR2SG91YVVZVjdGVWxZODBoZWhHdVN2T2t2Y0lJdUlMTVhmMk1UUXhlWUt4V0txakFNVEsrcjBuMVlGaFpVM0F5VStWd1JsazhrMGV5aDJ5NDc0MWtmZytGOHFPNnA0cW9BRlg3dStnMSttVitUcmxBNkppbjQvT1dQZGtwVCt1WnhRbW5aNFBqWFdkd1JjVENlN2hDUS9iSTVJTE92bjN2Mm5iQTNzRSsvZWZqejIwTnh1VXNyY2hvLzkrQ25pZDJYbUlEMlFmUUJzUzhhRzQrSmhjM0xKQUg4K0Q2N2V3cnovVzEvWjNIL08rN1F4d2hub3JidUFPOVpNc3Z1Zk1kRmJ0ZWhLUHBJUnpZYjk5QzJ6cnpJV0d1d3Q0blRyV3EydmtWaGtrSmZqemd1eStHNGdhaU9WclBxZnNxYTFXNWJKaFBiV05FYU95d2xoWDV3RE5rNjBwaWM4SkN2Sm5USHJiV1EwVDZFdC8xVzRoZzNrYjBkaEFHMWhjeTZZYkoyRWdScVArVVk5cmIxVmlDMUhVenRXcTVXUTY2ZnErcG9xTHJJSUhiVU1NVmdiOHNOcUFtaTlnTGVKRmRMWjJ1U3hESm1Ba1RiY0J5dFlUaE5sZ0RLWlUyVTRlM1FUaWR0cTVkaHV6MUpkbVFQLy9YNy9lL2hJNEZYeldGSGdwR3BPbkpScG1IamVJd09RaUZ4cStNYWxvbURJdVREbGdzRmo5a2hZcXBya2tycTg3Vm0xM3c0djBnbUdNamVOVW5Ic2NCNDFwc3kwcWVwT0g4bnpDM0RaQWVJYTZHcXZ5MXAzUEdnNFV6SE5reTJHeW5NT2htOGhvajVwV3BXaXpHRDNzREJEOTg5eDMzUUN3QUEifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["status"],"name":[1],"type":["chr"],"align":["left"]},{"label":["year"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["wave"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["wave_f"],"name":[4],"type":["chr"],"align":["left"]},{"label":["sub_reg"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["sub_reg_f"],"name":[6],"type":["chr"],"align":["left"]},{"label":["st"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["st_f"],"name":[8],"type":["chr"],"align":["left"]},{"label":["sp_code"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["common"],"name":[10],"type":["chr"],"align":["left"]},{"label":["mode_fx"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["mode_fx_f"],"name":[12],"type":["chr"],"align":["left"]},{"label":["area_x"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["area_x_f"],"name":[14],"type":["chr"],"align":["left"]},{"label":["estclaim"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["estclvar"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["estharv"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["esthvar"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["landing"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["land_var"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["estrel"],"name":[21],"type":["dbl"],"align":["right"]},{"label":["estrlvar"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["tot_cat"],"name":[23],"type":["dbl"],"align":["right"]},{"label":["lbs_ab1"],"name":[24],"type":["dbl"],"align":["right"]},{"label":["var_lbs"],"name":[25],"type":["dbl"],"align":["right"]},{"label":["wgt_ab1"],"name":[26],"type":["dbl"],"align":["right"]},{"label":["var_wab1"],"name":[27],"type":["dbl"],"align":["right"]},{"label":["tot_len"],"name":[28],"type":["dbl"],"align":["right"]},{"label":["vartotlen"],"name":[29],"type":["dbl"],"align":["right"]},{"label":["miss_fish"],"name":[30],"type":["dbl"],"align":["right"]},{"label":["ALT_FLAG"],"name":[31],"type":["dbl"],"align":["right"]}],"data":[{"1":"FINAL","2":"2020","3":"1","4":"JAN/FEB","5":"6","6":"SOUTH ATLANTIC","7":"12","8":"FLORIDA","9":"1000000000","10":"UNIDENTIFIED FISH","11":"3","12":"SHORE","13":"1","14":"OCEAN (<= 3 MI)","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"188878","22":"32448381830","23":"188878","24":"0","25":"0","26":"0","27":"0","28":"0","29":"0","30":"0","31":"0"},{"1":"FINAL","2":"2020","3":"1","4":"JAN/FEB","5":"6","6":"SOUTH ATLANTIC","7":"12","8":"FLORIDA","9":"1000000000","10":"UNIDENTIFIED FISH","11":"3","12":"SHORE","13":"5","14":"INLAND","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"53960","22":"2824596800","23":"53960","24":"0","25":"0","26":"0","27":"0","28":"0","29":"0","30":"0","31":"0"},{"1":"FINAL","2":"2020","3":"1","4":"JAN/FEB","5":"6","6":"SOUTH ATLANTIC","7":"12","8":"FLORIDA","9":"8707020101","10":"NURSE SHARK","11":"7","12":"PRIVATE/RENTAL BOAT","13":"1","14":"OCEAN (<= 3 MI)","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"5541","22":"19914822","23":"5541","24":"0","25":"0","26":"0","27":"0","28":"0","29":"0","30":"0","31":"0"},{"1":"FINAL","2":"2020","3":"1","4":"JAN/FEB","5":"6","6":"SOUTH ATLANTIC","7":"12","8":"FLORIDA","9":"8707020101","10":"NURSE SHARK","11":"7","12":"PRIVATE/RENTAL BOAT","13":"2","14":"OCEAN (> 3 MI)","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"14475","22":"187903043","23":"14475","24":"0","25":"0","26":"0","27":"0","28":"0","29":"0","30":"0","31":"0"},{"1":"FINAL","2":"2020","3":"1","4":"JAN/FEB","5":"6","6":"SOUTH ATLANTIC","7":"12","8":"FLORIDA","9":"8707020101","10":"NURSE SHARK","11":"7","12":"PRIVATE/RENTAL BOAT","13":"5","14":"INLAND","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"1470","22":"2281545","23":"1470","24":"0","25":"0","26":"0","27":"0","28":"0","29":"0","30":"0","31":"0"},{"1":"FINAL","2":"2020","3":"1","4":"JAN/FEB","5":"6","6":"SOUTH ATLANTIC","7":"12","8":"FLORIDA","9":"8708020000","10":"REQUIEM SHARK FAMILY","11":"3","12":"SHORE","13":"1","14":"OCEAN (<= 3 MI)","15":"0","16":"0","17":"0","18":"0","19":"0","20":"0","21":"46640","22":"1933378036","23":"46640","24":"0","25":"0","26":"0","27":"0","28":"0","29":"0","30":"0","31":"0"}],"options":{"columns":{"min":{},"max":[10],"total":[31]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChSZWNlbnRfSGFybWZ1bF9BbGdhbF9CbG9vbV9IQUJfRXZlbnRzKVxuYGBgIn0= -->
-<pre class="r"><code>head(Recent_Harmful_Algal_Bloom_HAB_Events)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NiwibmNvbCI6MTQsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiNiB4IDE0Il19fSwicmRmIjoiSDRzSUFBQUFBQUFBQnIxVlMyZ1RRUmplNW1WYmJTeUlpdUpoRGxwYUpPa21iYXltV0xONTlLRjUwVzVvdEVLWlppZlpKWnZkc0x2cFF5a1VSRDFVMExNb2d1M0preGNGYjZGNDhxQjNUOTdFMTBGVUJDMnRzOW1aMG9RZ3RvcExadWYvdnZuL2YrYWIyZmt6SHMzMnRXZmJHWWF4TXc3R3lkaWQyR1Jja2JUUEgvQXpqTU9HVVFzZWFUUDdlZXgxQUJ0dTBselZUSEY5TUFVTDFjelVIZm1GNTJrMXN4eCs5T0RxVkpXL3BUMEd6KzlWK2V0Z3FucDBvTW92cmI4OGxqMUI0MEpEUFQvZnlzdlIwTmt2RllFOXlZV0dDcGU3djYzZERnVnZySFV0M1I4TEJZdGZiNjQvT3g0SzZuY1BsMTYvb25IYzhQZUg1dnJNZnNucVZ3aGVJWGlWNEZVVDQ2ZlRqQ01DRHZsWlg2Q1g5Zld5WndETEJtdS9reXk3czFHZi83ZWovZjlzbExGYmUvWHhTazFJNk5NVHEvKzhXSk1XZXJkbzRmZlhMUHhCSUpMckRzMlprNkd1azQyd0VkSXVsblJpdGdwU1BtOUlKZFFZVjFFa2c4WlIwcUdqbk1sdE5HeXNmU1RCNzlZa1IzdnVqYlg0UCswYlZ0QTFyRWxJRVhSUktnTnVGZzJDaVJoUTg2Qjd3dkFDVGhFME5BZkNjS0dIZU85TG9Ia3BwNEl3Z2ptUmNHeEVYaEFRQ0h2QkpKSmxIWVExU1NqZ1JKTzFQQkZSelJsd1RvUkdUa1JvZTY0am5DenBxZ0pHWVFGcGxiS1ZFNlNoVmlRT0IzbW9sYkVEamdIaktoVHFadTJNU3dYUkVOV0tqZ2ovbDFka0YxZHkrejY2TDBBTktSSUVNeHFhbGZUL3pCSU56TTZmT2cyalhIalNGMkI5dm9DSFpmdWFzdjFOMlVCVDlsUlRkcUFwZXhvelpqVjFMZUZYczlaNHpSUllRdlNhdVdtaHpWTGpJcjJscWZENVdJUWZpeEs4ZDRKTHBPT3g2U2pIeCtqZDVNY1MxRzQxN1V1cEpNWE9hQ3pOajlMQmVDckM4V09wNUJiR2lNOUVxWE5iUEpVYzJVNDRrdHhXWmxja2xVbnkweFJoN2ROYmkzSk9pTERjV0VmYU5IWE9TMFYyNEdZemQyRnpjL09INVdqYlpPcHJUTHNBRGVqTmE5QXNTV2FscVV1M1J5MGJrcXJnWkRiem44alpFTnlpTlJEN0s0bzV1ZURKaVJXbDZQR1I0MmtobjAwSHNWM2JiTGMxcFlNdXpFbkZJcVVnS1lpS2xlRU1rdWszZ0VYV05IckxtcVFZVkFsbWRhK2hHcEQ2dGVkVW1USldGZDM0QmY3elp0YUJCd0FBIn0= -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["X"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Y"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["OBJECTID"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["SAMPLE_DATE"],"name":[4],"type":["chr"],"align":["left"]},{"label":["TIME"],"name":[5],"type":["S3: hms"],"align":["right"]},{"label":["TIMEZONE"],"name":[6],"type":["chr"],"align":["left"]},{"label":["DEPTH"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["LOCATION"],"name":[8],"type":["chr"],"align":["left"]},{"label":["LATITUDE"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["LONGITUDE"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["NAME"],"name":[11],"type":["chr"],"align":["left"]},{"label":["COUNT_"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["HAB_ID"],"name":[13],"type":["chr"],"align":["left"]},{"label":["Shape"],"name":[14],"type":["lgl"],"align":["right"]}],"data":[{"1":"-85.68727","2":"30.16400","3":"3010372","4":"2015/01/09 00:00:00+00","5":"16:12:00","6":"GMT","7":"0.5","8":"Friendship Ave; SE of (St. Andrew Bay)","9":"30.16400","10":"-85.68727","11":"Karenia brevis","12":"0","13":"HABW150115-003","14":"NA"},{"1":"-85.43069","2":"29.95101","3":"3010373","4":"2015/01/09 00:00:00+00","5":"16:54:00","6":"GMT","7":"0.5","8":"Mexico Beach","9":"29.95101","10":"-85.43069","11":"Karenia brevis","12":"0","13":"HABW150115-004","14":"NA"},{"1":"-86.17594","2":"30.40375","3":"3010374","4":"2015/01/12 00:00:00+00","5":"19:54:00","6":"GMT","7":"0.5","8":"Clyde B. Wells Bridge; W of (Choctawhatchee Bay)","9":"30.40375","10":"-86.17594","11":"Karenia brevis","12":"0","13":"HABW150115-005","14":"NA"},{"1":"-82.19450","2":"26.52640","3":"3010375","4":"2015/01/14 00:00:00+00","5":"14:30:00","6":"GMT","7":"0.5","8":"Alison Hagerup Beach Park","9":"26.52640","10":"-82.19450","11":"Karenia brevis","12":"0","13":"HABW150115-006","14":"NA"},{"1":"-82.08010","2":"26.42170","3":"3010376","4":"2015/01/14 00:00:00+00","5":"15:05:00","6":"GMT","7":"0.5","8":"Tarpon Bay Road Beach","9":"26.42170","10":"-82.08010","11":"Karenia brevis","12":"0","13":"HABW150115-007","14":"NA"},{"1":"-82.01543","2":"26.45157","3":"3010377","4":"2015/01/14 00:00:00+00","5":"15:35:00","6":"GMT","7":"0.5","8":"Lighthouse Beach","9":"26.45157","10":"-82.01543","11":"Karenia brevis","12":"0","13":"HABW150115-008","14":"NA"}],"options":{"columns":{"min":{},"max":[10],"total":[14]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2h0dHBzOi8vc3RhY2tvdmVyZmxvdy5jb20vcXVlc3Rpb25zLzMzMjIxNDI1L2hvdy1kby1pLWdyb3VwLW15LWRhdGUtdmFyaWFibGUtaW50by1tb250aC15ZWFyLWluLXJcbkhBQiA8LSBSZWNlbnRfSGFybWZ1bF9BbGdhbF9CbG9vbV9IQUJfRXZlbnRzICU+JVxuICAgIG11dGF0ZShkYXRlPWFzLkRhdGUoU0FNUExFX0RBVEUpKSAlPiVcbiAgICBtdXRhdGUobW9udGg9Zm9ybWF0KGRhdGUsIFwiJW1cIilcbiAgICAgICAgICAgLHllYXI9Zm9ybWF0KGRhdGUsXCIlWVwiKSkgJT4lXG4gICAgZmlsdGVyKHllYXIgPT0gXCIyMDIwXCIpICU+JVxuICAgIG11dGF0ZSh3YXZlPWNhc2Vfd2hlbihtb250aD09XCIwMVwiIH4gXCJKQU4vRkVCXCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgIG1vbnRoPT1cIjAyXCIgfiBcIkpBTi9GRUJcIixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgbW9udGg9PVwiMDNcIiB+IFwiTUFSL0FQUlwiLFxuICAgICAgICAgICAgICAgICAgICAgICAgICBtb250aD09XCIwNFwiIH4gXCJNQVIvQVBSXCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgIG1vbnRoPT1cIjA1XCIgfiBcIk1BWS9KVU5cIixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgbW9udGg9PVwiMDZcIiB+IFwiTUFZL0pVTlwiLFxuICAgICAgICAgICAgICAgICAgICAgICAgICBtb250aD09XCIwN1wiIH4gXCJKVUwvQVVHXCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgIG1vbnRoPT1cIjA4XCIgfiBcIkpVTC9BVUdcIixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgbW9udGg9PVwiMDlcIiB+IFwiU0VQL09DVFwiLFxuICAgICAgICAgICAgICAgICAgICAgICAgICBtb250aD09XCIxMFwiIH4gXCJTRVAvT0NUXCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgIG1vbnRoPT1cIjExXCIgfiBcIk5PVi9ERUNcIixcbiAgICAgICAgICAgICAgICAgICAgICAgICAgbW9udGg9PVwiMTJcIiB+IFwiTk9WL0RFQ1wiLFxuICAgICAgICAgICAgICAgICAgICAgICAgICApKSAlPiVcbiAgICBzZWxlY3QoYyh5ZWFyLHdhdmUsQ09VTlRfKSkgJT4lIFxuICAgIGdyb3VwX2J5KHllYXIsd2F2ZSkgJT4lXG4gICAgc3VtbWFyaXplKGJyZXZpc19jb3VudCA9IHN1bShDT1VOVF8pKVxuYGBgIn0= -->
-<pre class="r"><code>#https://stackoverflow.com/questions/33221425/how-do-i-group-my-date-variable-into-month-year-in-r
-HAB &lt;- Recent_Harmful_Algal_Bloom_HAB_Events %&gt;%
-    mutate(date=as.Date(SAMPLE_DATE)) %&gt;%
-    mutate(month=format(date, &quot;%m&quot;)
-           ,year=format(date,&quot;%Y&quot;)) %&gt;%
-    filter(year == &quot;2020&quot;) %&gt;%
-    mutate(wave=case_when(month==&quot;01&quot; ~ &quot;JAN/FEB&quot;,
-                          month==&quot;02&quot; ~ &quot;JAN/FEB&quot;,
-                          month==&quot;03&quot; ~ &quot;MAR/APR&quot;,
-                          month==&quot;04&quot; ~ &quot;MAR/APR&quot;,
-                          month==&quot;05&quot; ~ &quot;MAY/JUN&quot;,
-                          month==&quot;06&quot; ~ &quot;MAY/JUN&quot;,
-                          month==&quot;07&quot; ~ &quot;JUL/AUG&quot;,
-                          month==&quot;08&quot; ~ &quot;JUL/AUG&quot;,
-                          month==&quot;09&quot; ~ &quot;SEP/OCT&quot;,
-                          month==&quot;10&quot; ~ &quot;SEP/OCT&quot;,
-                          month==&quot;11&quot; ~ &quot;NOV/DEC&quot;,
-                          month==&quot;12&quot; ~ &quot;NOV/DEC&quot;,
-                          )) %&gt;%
-    select(c(year,wave,COUNT_)) %&gt;% 
-    group_by(year,wave) %&gt;%
-    summarize(brevis_count = sum(COUNT_))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCBoYXMgZ3JvdXBlZCBvdXRwdXQgYnkgJ3llYXInLiBZb3UgY2FuIG92ZXJyaWRlIHVzaW5nIHRoZSBgLmdyb3Vwc2AgYXJndW1lbnQuXG4ifQ== -->
-<pre><code>`summarise()` has grouped output by &#39;year&#39;. You can override using the `.groups` argument.</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTVJJUCA8LSBtcmlwX2NhdGNoX3dhdmVfMjAyMCAlPiVcbiAgZmlsdGVyKHN0X2Y9PVwiRkxPUklEQVwiKSAlPiVcbiAgc2VsZWN0KGMoeWVhcix3YXZlX2YsdG90X2NhdCkpICU+JSBcbiAgbXV0YXRlKHllYXI9YXMuY2hhcmFjdGVyKHllYXIpKSAlPiUgXG4gIGdyb3VwX2J5KHllYXIsd2F2ZV9mKSAlPiVcbiAgc3VtbWFyaXplKGNhdGNoX2NvdW50ID0gc3VtKHRvdF9jYXQpKVxuYGBgIn0= -->
-<pre class="r"><code>MRIP &lt;- mrip_catch_wave_2020 %&gt;%
-  filter(st_f==&quot;FLORIDA&quot;) %&gt;%
-  select(c(year,wave_f,tot_cat)) %&gt;% 
-  mutate(year=as.character(year)) %&gt;% 
-  group_by(year,wave_f) %&gt;%
-  summarize(catch_count = sum(tot_cat))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCBoYXMgZ3JvdXBlZCBvdXRwdXQgYnkgJ3llYXInLiBZb3UgY2FuIG92ZXJyaWRlIHVzaW5nIHRoZSBgLmdyb3Vwc2AgYXJndW1lbnQuXG4ifQ== -->
-<pre><code>`summarise()` has grouped output by &#39;year&#39;. You can override using the `.groups` argument.</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5IQUJfTVJJUCA8LSBsZWZ0X2pvaW4oSEFCLE1SSVAsIFxuICAgICAgICAgIGJ5ID0gYyhcInllYXJcIiA9IFwieWVhclwiLFwid2F2ZVwiPVwid2F2ZV9mXCIpKVxuXG5IQUJfTVJJUFxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5IQUJfTVJJUCA8LSBsZWZ0X2pvaW4oaGFiX2NvdW50X3dhdmUsbXJpcF9jYXRjaF93YXZlLCBcbiAgICAgICAgICBieSA9IGMoXCJ5ZWFyXCIgPSBcInllYXJcIixcIndhdmVcIj1cIndhdmVfZlwiKSkgJT4lXG4gICAgICAgICAgbXV0YXRlKHllYXI9YXMuaW50ZWdlcih5ZWFyKSkgJT4lXG4gICAgICAgICAgZmlsdGVyKHllYXI+XCIxOTgxXCIpICU+JVxuICAgICAgICAgIGFycmFuZ2UoeWVhcix3YXZlX3NvcnQpXG4gICAgICAgICAgXG5WaWV3KEhBQl9NUklQKVxuXG5gYGAifQ== -->
 <pre class="r"><code>
-HAB_MRIP &lt;- left_join(HAB,MRIP, 
-          by = c(&quot;year&quot; = &quot;year&quot;,&quot;wave&quot;=&quot;wave_f&quot;))
-
-HAB_MRIP</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImdyb3VwZWRfZGYiLCJ0YmxfZGYiLCJ0YmwiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjYsIm5jb2wiOjQsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiNiB4IDQiXSwiR3JvdXBzIjpbInllYXIgWzFdIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQmd0eWlURG1pdUJpWUdCZ1ptQmhZR1ZnWmdVeUdkaWNBd3lOVEkwWUdGaVlnRHhHb0F3bmlLNEFxaElHTWxpQVdBQ2tEQ3JCWW1SZ1pFQVJHOVU4ZGk5SFAzMDNWeWM0TjlSSDN6SFVIY2IxZFF6U2R3d0lRbkFqOWIxQy9XQmNQLzh3ZlJkWFp4ZzMyRFZBMzk4NUJNamtBOW5nS09UL0ErUkRoNmZuRmNEMGRla0RZUHAwT0loaWNKeGtVUzRENG05NHd3QUZFSDE5TFJJZ1p6cE9GOTFsQXFJYkZlWTFnT2lwa3d0QUJqcDJybTFPQU5GeldncEZ3TnBRZ280MU9TZXh1QmpxVFpnZ1YwcGlTYUplV2xGaWJpcWFjczZpL0hLOVBLQTRTQXN2RURPQjdQci8vLzh2ZEhOaGlnVEEwUUlOMHNyVXhDSVl1enl4TEJYSzVra3FTaTNMTEk1UHppL05LNEdLY1NjbmxpUm5RSVVZR1A2aG1jK2VYMUNTbVo4SHRJRUpGUEdzYUQ1Z0xFSVRFQ2pOQTdrb1JUYzVvelF2V3hjY3MxeGdlUWpnaGJMWmtOZ3NFRHRaL2tQTllvV2F4WmFhbDU2WkIzTThhMDVpVW1vT2xNTUhEQit3ei9VS2lqTGhmdUVDaWhicmxlU1hKTUxVY1NYbjU4QkV3SjVqK0FjQS9aOGs2ZkVDQUFBPSJ9 -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["year"],"name":[1],"type":["chr"],"align":["left"]},{"label":["wave"],"name":[2],"type":["chr"],"align":["left"]},{"label":["brevis_count"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["catch_count"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2020","2":"JAN/FEB","3":"300030","4":"63996678"},{"1":"2020","2":"JUL/AUG","3":"44665","4":"96824973"},{"1":"2020","2":"MAR/APR","3":"23663","4":"35918800"},{"1":"2020","2":"MAY/JUN","3":"13998","4":"90496062"},{"1":"2020","2":"NOV/DEC","3":"76422599","4":"53850220"},{"1":"2020","2":"SEP/OCT","3":"4332","4":"119610437"}],"options":{"columns":{"min":{},"max":[10],"total":[4]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbmBgYCJ9 -->
-<pre class="r"><code>NA</code></pre>
+HAB_MRIP &lt;- left_join(hab_count_wave,mrip_catch_wave, 
+          by = c(&quot;year&quot; = &quot;year&quot;,&quot;wave&quot;=&quot;wave_f&quot;)) %&gt;%
+          mutate(year=as.integer(year)) %&gt;%
+          filter(year&gt;&quot;1981&quot;) %&gt;%
+          arrange(year,wave_sort)
+          
+View(HAB_MRIP)
+</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1ZpZXcoSEFCX01SSVApXG5oZWFkKEhBQl9NUklQX3NvcnRlZClcbmBgYCJ9 -->
+<pre class="r"><code>#View(HAB_MRIP)
+head(HAB_MRIP_sorted)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NiwibmNvbCI6NSwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyI2IHggNSJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUJndHlpVERtaXVCaVlHQmdabUJoWUdWZ1pnVXlHZGljQXd5TlRJMFlHRmlZZ0R4R29Bd25pSzRBcWhJR01rQnFCRURLb0JJc2hwWVdoampZUmtTeFVjMWpEM1lOMFBkM0RvRngvZnpEOUYxY25XRmNMMGMvZlRkWEp4algxekZJM3pFZ0NDNGI2cVB2R09xT2JoUURBeS9ZQm9qcjJjRGVZbUFBZVk4RktzWUhFbmUwNS9SaFFBS09PYk9aRm9Eb2htdG53WFIzbS9FTEVOM0V0eU1Db2dTaXIvTXVvd2RJdkZjNEZxTGVheStZbnZpZWV3NklibjNwQVpadkM5YXRBR3REQ1ZyV3ZNVGMxR0pvTUxEQ2dxWXlOYkVJeGk1UExFdUZzamxCN1BqaS9LSVNxQUJQVWxGcVdXWnhmSEorYVI1TWpEczVzU1E1QXlxRWFobG5VWDY1SHN4Q1VLZ3dOUUNKLy8vLy8wSjNWWEpPWWpITVZUQkJycFRFa2tTOXRDS2dmaUR2SDVvVzl2eUNrc3o4UEtBbUp1U1VBazlDUldnQ0FxVjVJSmVrNkNabmxPWmw2eHBhZ0d5QVJnNEQxSG1NMEFpRHNWa2hkakw5UndzdnR0Uzg5TXc4V0NpeDVpUW1wZVpBT1h4QUw0TjlyRmRRbEFrUEl5NmdhTEZlU1g1Sklrd2RWM0orRGt3RTdEbUdmd0FIRFFON0lnTUFBQT09In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["year"],"name":[1],"type":["chr"],"align":["left"]},{"label":["wave"],"name":[2],"type":["chr"],"align":["left"]},{"label":["wave_sort"],"name":[3],"type":["int"],"align":["right"]},{"label":["brevis_count"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["catch_count"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"1981","2":"SEP/OCT","3":"5","4":"2033996","5":"54239273"},{"1":"1981","2":"NOV/DEC","3":"6","4":"0","5":"60976052"},{"1":"1982","2":"JAN/FEB","3":"1","4":"14997525","5":"34166708"},{"1":"1982","2":"MAR/APR","3":"2","4":"35314100","5":"75219687"},{"1":"1982","2":"JUL/AUG","3":"4","4":"57722493","5":"45951241"},{"1":"1982","2":"SEP/OCT","3":"5","4":"37869323","5":"46818735"}],"options":{"columns":{"min":{},"max":[10],"total":[5]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxueWVhcnMgPC0gSEFCX01SSVAgJT4lIGRpc3RpbmN0KHllYXIpXG55ZWFyc1xuYGBgIn0= -->
+<pre class="r"><code>years &lt;- HAB_MRIP %&gt;% distinct(year)
+years</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NDAsIm5jb2wiOjEsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiNDAgeCAxIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQmwyU3owNkRRQkNIQndvMUpkRTA4U1c4bEREMEgzdldCekNlZWwwcEtoR1hodEtvTngvVHB5bE9jV2wvMlFQdzdlek1mRHRobng0MjgyZ1RFZEdJQWdwcEZBclMrUDZSMDJWS0ZQaXk4bVJuY3ZwK1NkWnRIeUNheW5Obk53SldHUU9ud0hQZ0JmQVNlQVc4QnM2QTFZVlZBZ3hlQlY0RlhnVmVCVjRGWGdWZUJWNTE5cVpKa2dBemNBbzhCMTRBTDRGWHdHdmdEQmk4REY0R0w0T1h3Y3ZnWmZBeWVCbThERjRHYjVvNEZ5QTArcVBZMjU4L0JJUHZRamRPNHFTcFArTWgrVm9lLzBkZVhkZjl1aDN6U3UvZGp0Rld0enArYWFSZVZrZW41S3JldFdWdHBNZy8zY1hRS2ZZYUp6QTltTk5KdHJQODdXRGVaektzR093bEpuczhyNy9NRi9iK25YNW5lNFcyMTdnd3I2VXBoc05YK3JtbzdPSkdSdTRuam5kTmFkcGhGSW51NDdadTlaQVg1WFUxUlByaDZQZ0hIUXRyQllRREFBQT0ifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["year"],"name":[1],"type":["chr"],"align":["left"]}],"data":[{"1":"1981"},{"1":"1982"},{"1":"1983"},{"1":"1984"},{"1":"1985"},{"1":"1986"},{"1":"1987"},{"1":"1988"},{"1":"1989"},{"1":"1990"},{"1":"1991"},{"1":"1992"},{"1":"1993"},{"1":"1994"},{"1":"1995"},{"1":"1996"},{"1":"1997"},{"1":"1998"},{"1":"1999"},{"1":"2000"},{"1":"2001"},{"1":"2002"},{"1":"2003"},{"1":"2004"},{"1":"2005"},{"1":"2006"},{"1":"2007"},{"1":"2008"},{"1":"2009"},{"1":"2010"},{"1":"2011"},{"1":"2012"},{"1":"2013"},{"1":"2014"},{"1":"2015"},{"1":"2016"},{"1":"2017"},{"1":"2018"},{"1":"2019"},{"1":"2020"}],"options":{"columns":{"min":{},"max":[10],"total":[1]},"rows":{"min":[10],"max":[10],"total":[40]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkFuYWx5c2lzIERyYWZ0Ig0Kb3V0cHV0OiBodG1sX25vdGVib29rDQotLS0NCg0KVGhpcyBpcyBhbiBbUiBNYXJrZG93bl0oaHR0cDovL3JtYXJrZG93bi5yc3R1ZGlvLmNvbSkgTm90ZWJvb2suIFdoZW4geW91IGV4ZWN1dGUgY29kZSB3aXRoaW4gdGhlIG5vdGVib29rLCB0aGUgcmVzdWx0cyBhcHBlYXIgYmVuZWF0aCB0aGUgY29kZS4gDQoNClRyeSBleGVjdXRpbmcgdGhpcyBjaHVuayBieSBjbGlja2luZyB0aGUgKlJ1biogYnV0dG9uIHdpdGhpbiB0aGUgY2h1bmsgb3IgYnkgcGxhY2luZyB5b3VyIGN1cnNvciBpbnNpZGUgaXQgYW5kIHByZXNzaW5nICpDdHJsK1NoaWZ0K0VudGVyKi4gDQoNCg0KQWRkIGEgbmV3IGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqSW5zZXJ0IENodW5rKiBidXR0b24gb24gdGhlIHRvb2xiYXIgb3IgYnkgcHJlc3NpbmcgKkN0cmwrQWx0K0kqLg0KDQpXaGVuIHlvdSBzYXZlIHRoZSBub3RlYm9vaywgYW4gSFRNTCBmaWxlIGNvbnRhaW5pbmcgdGhlIGNvZGUgYW5kIG91dHB1dCB3aWxsIGJlIHNhdmVkIGFsb25nc2lkZSBpdCAoY2xpY2sgdGhlICpQcmV2aWV3KiBidXR0b24gb3IgcHJlc3MgKkN0cmwrU2hpZnQrSyogdG8gcHJldmlldyB0aGUgSFRNTCBmaWxlKS4NCg0KVGhlIHByZXZpZXcgc2hvd3MgeW91IGEgcmVuZGVyZWQgSFRNTCBjb3B5IG9mIHRoZSBjb250ZW50cyBvZiB0aGUgZWRpdG9yLiBDb25zZXF1ZW50bHksIHVubGlrZSAqS25pdCosICpQcmV2aWV3KiBkb2VzIG5vdCBydW4gYW55IFIgY29kZSBjaHVua3MuIEluc3RlYWQsIHRoZSBvdXRwdXQgb2YgdGhlIGNodW5rIHdoZW4gaXQgd2FzIGxhc3QgcnVuIGluIHRoZSBlZGl0b3IgaXMgZGlzcGxheWVkLg0KDQpgYGB7cn0NCmxpYnJhcnkocmVhZHIpDQpsaWJyYXJ5KGRwbHlyKQ0KYGBgDQoNCg0KYGBge3J9DQptcmlwX2NhdGNoX3dhdmVfMjAyMCA8LSByZWFkX2NzdigiZGF0YS9tcmlwX2NhdGNoX3dhdmVfMjAyMC5jc3YiKQ0KVmlldyhtcmlwX2NhdGNoX3dhdmVfMjAyMCkNCg0KUmVjZW50X0hhcm1mdWxfQWxnYWxfQmxvb21fSEFCX0V2ZW50cyA8LSByZWFkX2NzdigiZGF0YS9SZWNlbnRfSGFybWZ1bF9BbGdhbF9CbG9vbV8oSEFCKV9FdmVudHMuY3N2IikNClZpZXcoUmVjZW50X0hhcm1mdWxfQWxnYWxfQmxvb21fSEFCX0V2ZW50cykNCg0KYGBgDQoNCmBgYHtyfQ0KaGVhZChtcmlwX2NhdGNoX3dhdmVfMjAyMCkNCmhlYWQoUmVjZW50X0hhcm1mdWxfQWxnYWxfQmxvb21fSEFCX0V2ZW50cykNCmBgYA0KDQpgYGB7cn0NCiNodHRwczovL3N0YWNrb3ZlcmZsb3cuY29tL3F1ZXN0aW9ucy8zMzIyMTQyNS9ob3ctZG8taS1ncm91cC1teS1kYXRlLXZhcmlhYmxlLWludG8tbW9udGgteWVhci1pbi1yDQpIQUIgPC0gUmVjZW50X0hhcm1mdWxfQWxnYWxfQmxvb21fSEFCX0V2ZW50cyAlPiUNCiAgICBtdXRhdGUoZGF0ZT1hcy5EYXRlKFNBTVBMRV9EQVRFKSkgJT4lDQogICAgbXV0YXRlKG1vbnRoPWZvcm1hdChkYXRlLCAiJW0iKQ0KICAgICAgICAgICAseWVhcj1mb3JtYXQoZGF0ZSwiJVkiKSkgJT4lDQogICAgZmlsdGVyKHllYXIgPT0gIjIwMjAiKSAlPiUNCiAgICBtdXRhdGUod2F2ZT1jYXNlX3doZW4obW9udGg9PSIwMSIgfiAiSkFOL0ZFQiIsDQogICAgICAgICAgICAgICAgICAgICAgICAgIG1vbnRoPT0iMDIiIH4gIkpBTi9GRUIiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICBtb250aD09IjAzIiB+ICJNQVIvQVBSIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgbW9udGg9PSIwNCIgfiAiTUFSL0FQUiIsDQogICAgICAgICAgICAgICAgICAgICAgICAgIG1vbnRoPT0iMDUiIH4gIk1BWS9KVU4iLA0KICAgICAgICAgICAgICAgICAgICAgICAgICBtb250aD09IjA2IiB+ICJNQVkvSlVOIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgbW9udGg9PSIwNyIgfiAiSlVML0FVRyIsDQogICAgICAgICAgICAgICAgICAgICAgICAgIG1vbnRoPT0iMDgiIH4gIkpVTC9BVUciLA0KICAgICAgICAgICAgICAgICAgICAgICAgICBtb250aD09IjA5IiB+ICJTRVAvT0NUIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgbW9udGg9PSIxMCIgfiAiU0VQL09DVCIsDQogICAgICAgICAgICAgICAgICAgICAgICAgIG1vbnRoPT0iMTEiIH4gIk5PVi9ERUMiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICBtb250aD09IjEyIiB+ICJOT1YvREVDIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgKSkgJT4lDQogICAgc2VsZWN0KGMoeWVhcix3YXZlLENPVU5UXykpICU+JSANCiAgICBncm91cF9ieSh5ZWFyLHdhdmUpICU+JQ0KICAgIHN1bW1hcml6ZShicmV2aXNfY291bnQgPSBzdW0oQ09VTlRfKSkNCg0KTVJJUCA8LSBtcmlwX2NhdGNoX3dhdmVfMjAyMCAlPiUNCiAgZmlsdGVyKHN0X2Y9PSJGTE9SSURBIikgJT4lDQogIHNlbGVjdChjKHllYXIsd2F2ZV9mLHRvdF9jYXQpKSAlPiUgDQogIG11dGF0ZSh5ZWFyPWFzLmNoYXJhY3Rlcih5ZWFyKSkgJT4lIA0KICBncm91cF9ieSh5ZWFyLHdhdmVfZikgJT4lDQogIHN1bW1hcml6ZShjYXRjaF9jb3VudCA9IHN1bSh0b3RfY2F0KSkNCg0KYGBgDQoNCmBgYHtyfQ0KDQpIQUJfTVJJUCA8LSBsZWZ0X2pvaW4oSEFCLE1SSVAsIA0KICAgICAgICAgIGJ5ID0gYygieWVhciIgPSAieWVhciIsIndhdmUiPSJ3YXZlX2YiKSkNCg0KSEFCX01SSVANCg0KYGBgDQoNCg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkFuYWx5c2lzIERyYWZ0Ig0Kb3V0cHV0OiBodG1sX25vdGVib29rDQotLS0NCg0KVGhpcyBpcyBhbiBbUiBNYXJrZG93bl0oaHR0cDovL3JtYXJrZG93bi5yc3R1ZGlvLmNvbSkgTm90ZWJvb2suIFdoZW4geW91IGV4ZWN1dGUgY29kZSB3aXRoaW4gdGhlIG5vdGVib29rLCB0aGUgcmVzdWx0cyBhcHBlYXIgYmVuZWF0aCB0aGUgY29kZS4gDQoNClRyeSBleGVjdXRpbmcgdGhpcyBjaHVuayBieSBjbGlja2luZyB0aGUgKlJ1biogYnV0dG9uIHdpdGhpbiB0aGUgY2h1bmsgb3IgYnkgcGxhY2luZyB5b3VyIGN1cnNvciBpbnNpZGUgaXQgYW5kIHByZXNzaW5nICpDdHJsK1NoaWZ0K0VudGVyKi4gDQoNCg0KQWRkIGEgbmV3IGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqSW5zZXJ0IENodW5rKiBidXR0b24gb24gdGhlIHRvb2xiYXIgb3IgYnkgcHJlc3NpbmcgKkN0cmwrQWx0K0kqLg0KDQpXaGVuIHlvdSBzYXZlIHRoZSBub3RlYm9vaywgYW4gSFRNTCBmaWxlIGNvbnRhaW5pbmcgdGhlIGNvZGUgYW5kIG91dHB1dCB3aWxsIGJlIHNhdmVkIGFsb25nc2lkZSBpdCAoY2xpY2sgdGhlICpQcmV2aWV3KiBidXR0b24gb3IgcHJlc3MgKkN0cmwrU2hpZnQrSyogdG8gcHJldmlldyB0aGUgSFRNTCBmaWxlKS4NCg0KVGhlIHByZXZpZXcgc2hvd3MgeW91IGEgcmVuZGVyZWQgSFRNTCBjb3B5IG9mIHRoZSBjb250ZW50cyBvZiB0aGUgZWRpdG9yLiBDb25zZXF1ZW50bHksIHVubGlrZSAqS25pdCosICpQcmV2aWV3KiBkb2VzIG5vdCBydW4gYW55IFIgY29kZSBjaHVua3MuIEluc3RlYWQsIHRoZSBvdXRwdXQgb2YgdGhlIGNodW5rIHdoZW4gaXQgd2FzIGxhc3QgcnVuIGluIHRoZSBlZGl0b3IgaXMgZGlzcGxheWVkLg0KDQpgYGB7cn0NCmxpYnJhcnkocmVhZHIpDQpsaWJyYXJ5KGRwbHlyKQ0Kc291cmNlKCJjdXN0b21fZnVuY3Rpb25zLlIiKQ0KYGBgDQoNCg0KYGBge3IgbWVzc2FnZSA9IEZBTFNFfQ0KbXJpcF9jYXRjaF93YXZlIDwtIG15SW1wb3J0X21yaXAoKQ0KaGFiX2NvdW50X3dhdmUgPC0gbXlJbXBvcnRfaGFiKCkNCg0KYGBgDQoNCg0KDQpgYGB7cn0NCg0KSEFCX01SSVAgPC0gbGVmdF9qb2luKGhhYl9jb3VudF93YXZlLG1yaXBfY2F0Y2hfd2F2ZSwgDQogICAgICAgICAgYnkgPSBjKCJ5ZWFyIiA9ICJ5ZWFyIiwid2F2ZSI9IndhdmVfZiIpKSAlPiUNCiAgICAgICAgICBtdXRhdGUoeWVhcj1hcy5pbnRlZ2VyKHllYXIpKSAlPiUNCiAgICAgICAgICBmaWx0ZXIoeWVhcj4iMTk4MyIpICU+JQ0KICAgICAgICAgIGFycmFuZ2UoeWVhcix3YXZlX3NvcnQpDQogICAgICAgICAgDQpWaWV3KEhBQl9NUklQKQ0KDQpgYGANCg0KYGBge3J9DQojVmlldyhIQUJfTVJJUCkNCg0KYGBgDQoNCg==</div>
 
 
 

@@ -17,63 +17,32 @@ The preview shows you a rendered HTML copy of the contents of the editor. Conseq
 ```{r}
 library(readr)
 library(dplyr)
+source("custom_functions.R")
 ```
 
 
-```{r}
-mrip_catch_wave_2020 <- read_csv("data/mrip_catch_wave_2020.csv")
-View(mrip_catch_wave_2020)
-
-Recent_Harmful_Algal_Bloom_HAB_Events <- read_csv("data/Recent_Harmful_Algal_Bloom_(HAB)_Events.csv")
-View(Recent_Harmful_Algal_Bloom_HAB_Events)
+```{r message = FALSE}
+mrip_catch_wave <- myImport_mrip()
+hab_count_wave <- myImport_hab()
 
 ```
 
-```{r}
-head(mrip_catch_wave_2020)
-head(Recent_Harmful_Algal_Bloom_HAB_Events)
-```
+
 
 ```{r}
-#https://stackoverflow.com/questions/33221425/how-do-i-group-my-date-variable-into-month-year-in-r
-HAB <- Recent_Harmful_Algal_Bloom_HAB_Events %>%
-    mutate(date=as.Date(SAMPLE_DATE)) %>%
-    mutate(month=format(date, "%m")
-           ,year=format(date,"%Y")) %>%
-    filter(year == "2020") %>%
-    mutate(wave=case_when(month=="01" ~ "JAN/FEB",
-                          month=="02" ~ "JAN/FEB",
-                          month=="03" ~ "MAR/APR",
-                          month=="04" ~ "MAR/APR",
-                          month=="05" ~ "MAY/JUN",
-                          month=="06" ~ "MAY/JUN",
-                          month=="07" ~ "JUL/AUG",
-                          month=="08" ~ "JUL/AUG",
-                          month=="09" ~ "SEP/OCT",
-                          month=="10" ~ "SEP/OCT",
-                          month=="11" ~ "NOV/DEC",
-                          month=="12" ~ "NOV/DEC",
-                          )) %>%
-    select(c(year,wave,COUNT_)) %>% 
-    group_by(year,wave) %>%
-    summarize(brevis_count = sum(COUNT_))
 
-MRIP <- mrip_catch_wave_2020 %>%
-  filter(st_f=="FLORIDA") %>%
-  select(c(year,wave_f,tot_cat)) %>% 
-  mutate(year=as.character(year)) %>% 
-  group_by(year,wave_f) %>%
-  summarize(catch_count = sum(tot_cat))
+HAB_MRIP <- left_join(hab_count_wave,mrip_catch_wave, 
+          by = c("year" = "year","wave"="wave_f")) %>%
+          mutate(year=as.integer(year)) %>%
+          filter(year>"1983") %>%
+          arrange(year,wave_sort)
+          
+View(HAB_MRIP)
 
 ```
 
 ```{r}
-
-HAB_MRIP <- left_join(HAB,MRIP, 
-          by = c("year" = "year","wave"="wave_f"))
-
-HAB_MRIP
+#View(HAB_MRIP)
 
 ```
-
 
