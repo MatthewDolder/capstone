@@ -27,7 +27,7 @@ Data used for analysis.  Created by joining MRIP and HAB datasets, filtering unw
 
 ## Sources
 <p align="center">
-Florida Fish and Wildlife Conservation Commission (2021, March 8) Recent Harmful Algal Bloom (HAB) Events. Tallahassee, FL: Florida Fish and Wildlife Conservation Commission. Retried from
+Florida Fish and Wildlife Conservation Commission (2021, March 8) Recent Harmful Algal Bloom (HAB) Events. Tallahassee, FL: Florida Fish and Wildlife Conservation Commission. Retrieved from
 https://geodata.myfwc.com/datasets/recent-harmful-algal-bloom-hab-events
 </p>
 <p align="center">
