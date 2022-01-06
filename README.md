@@ -4,26 +4,26 @@
 ### Last Updated: January 6, 2022
 
 ## Summary
-    This repository contains code and data used in the WGU capstone project entitled *Effect of Red Tide on Florida Gulf Coast Game Fishing*
+This repository contains code and data used in the WGU capstone project entitled *Effect of Red Tide on Florida Gulf Coast Game Fishing*
 
 ## File Structure
 
 ### /wrangle/
-    Contains code used to process raw data and output in a for used for analysis.
+Contains code used to process raw data and output in a for used for analysis.
 
 ### /analysis/
-    Contains code used to analyse the output data.  
+Contains code used to analyse the output data.  
 
 ### /data_sample/
-    One yar worth of raw data in csv format (2020).  The full dataset is 30 years and too much to upload to Github. The full dataset can be downloaded from the sources listed below.  
+Two months worth of raw data in csv format.  Jan-Feb 2020.  The full dataset is 30 years and too much to upload to Github. The full dataset can be downloaded from the sources listed below.  
 #### /data_sample/mrip
-    MRIP catch survey data. Courtesy: NOAA Fisheries. (NOAA 2021)
+MRIP catch survey data. Courtesy: NOAA Fisheries. (NOAA 2021)
 
 #### /data_sample/hab
-    K. brevis count data. Courtesy: Florida Fish and Wildlife Conservation Commission.  (FWFC 2021) 
+K. brevis count data. Courtesy: Florida Fish and Wildlife Conservation Commission.  (FWFC 2021) 
 
 ### /data_out/
-    Data used for analysis.  Created by joining MRIP and HAB datasets, filtering unwanted fields, outliers, and geographic area. This data is for academic purposes only.  
+Data used for analysis.  Created by joining MRIP and HAB datasets, filtering unwanted fields, outliers, and geographic area. This data is for academic purposes only.  
 
 ## Sources
 <p align="center">
