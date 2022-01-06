@@ -1,92 +1,183 @@
 ---
-title: "R Notebook"
-output: html_notebook
+survey_Wrangle.Rmd
+Summary: This notebook join three different CSV files
+          1.  trip.csv which contains NOAA survey results for fishing trips.
+              We need this because it contains AREA and we want to filter on the Sarasota bay area. 
+          2.  catch.csv which contains NOAA survey results for number and type of fish caught on each trip. 
+              We need this because it contains total catch which will be used for analyis.  
+          3.  Recent_Harmful_Algal_Bloom_(HAB)_Events.csv which contains the K. brevis count
+              for water samples.  
+              
+output: sarasota.csv which contains yea, month, common species name, mode, area, catch count, brevis count.  
+
+DATA_DIR controls whether the notebook is using the sample data for testing or the full 30 year dataset.  
+
 ---
+```{r}
+DATA_DIR <- "data"
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+##############################################################
+#
+#DATA_DIR <- "data_sample"  #un-comment this line in test mode
+#
+##############################################################
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+
+mripPath <- paste("../",DATA_DIR,"/mrip/",sep="")
+habPath <- paste("../",DATA_DIR,"/hab/",sep="")
+
+```
+
 
 ```{r}
 library(tidyverse)
 library(dplyr)
 #library(stringr)
-
-
-myFiles <- list.files(path = "data/survey/", pattern = "trip*", all.files = FALSE,
-           full.names = TRUE, recursive = FALSE,
-           ignore.case = FALSE, include.dirs = FALSE, no.. = FALSE)
-
-  trip_in <- read.csv(myFiles[1]) %>% select(c(YEAR,month,AREA,ID_CODE)) %>% filter(AREA=="J")
-for (k in 2:length(myFiles)){
-    trip_in <- rbind(trip_in,read.csv(myFiles[[k]]) %>% select(c(YEAR,month,AREA,ID_CODE)) %>% filter(AREA=="J"))
-}
-  
-
 ```
 
 
+
 ```{r}
-myFiles <- list.files(path = "data/survey/", pattern = "catch*", all.files = FALSE,
+
+#grab all trip files from survey dataset
+myFiles <- list.files(path = mripPath, pattern = "trip*", all.files = FALSE,
            full.names = TRUE, recursive = FALSE,
            ignore.case = FALSE, include.dirs = FALSE, no.. = FALSE)
 
-catch_in <- read.csv(myFiles[1])
+#Initialize the dataset using the first file.  Filter by Area "J" which means "Sarasota Estuary"
+trip_in <- read.csv(myFiles[1]) %>% filter(AREA=="J") %>% select(c(ID_CODE))
 
-  catch_in <- read.csv(myFiles[1]) %>% select(c(common,MODE_FX,AREA_X,YEAR,month,ID_CODE,tot_cat))
-for (k in 2:length(myFiles)){
-    catch_in <- rbind(catch_in,read.csv(myFiles[[k]]) %>% select(c(common,MODE_FX,AREA_X,YEAR,month,ID_CODE,tot_cat)))
+#if there is more than 1 file, as is the case with multiple years and months, step through them all. 
+if (length(myFiles) > 1) {
+  for (k in 2:length(myFiles)) {
+  #Due to a runtime error, I discovered that at least one file is missing AREA=J.  
+  #That means our survey data is incomplete. 
+  #check each file and print the filename if missing Sarasota records. 
+  this_trip <- read.csv(myFiles[[k]]) %>% filter(AREA=="J")
+    if (nrow(this_trip)==0) {
+      print(myFiles[[k]]) #print files with missing area
+    } else {
+      trip_in <- rbind(trip_in,this_trip %>% select(c(ID_CODE)))
+    }
+  }
 }
 
+head(trip_in)
+#%>% filter(AREA=="J"))
+```
+trip_in ID_CODE filtered by AREA=J or "Sarasota Estuary."  
+In the next section, we use ID_CODE to filter the catch data by area. 
+
+```{r}
+myFiles <- list.files(path = mripPath, pattern = "catch*", all.files = FALSE,
+           full.names = TRUE, recursive = FALSE,
+           ignore.case = FALSE, include.dirs = FALSE, no.. = FALSE)
+
+#catch_in <- read.csv(myFiles[1])
+
+#Initialize the dataset using the first file.  
+catch_in <- read.csv(myFiles[1]) %>% select(c(common,MODE_FX,AREA_X,YEAR,month,ID_CODE,tot_cat))
+
+#if there is more than 1 file, as is the case with multiple years and months, step through them all. 
+
+if (length(myFiles) > 1) {
+  for (k in 2:length(myFiles)){
+    
+    #in 2004, The MRIP data changed field name `month` to `MONTH`  
+    #then it changed back to lower case later on. 
+    this_catch <- read.csv(myFiles[[k]]) #check for upper case month and change to lower
+    if ("MONTH" %in% colnames(this_catch)){
+      this_catch <- this_catch %>% mutate(month=MONTH)
+    }
+    
+    
+    tryCatch({
+    catch_in <- rbind(catch_in,this_catch %>% select(c(common,MODE_FX,AREA_X,YEAR,month,ID_CODE,tot_cat)))
+    }, error=function(e) {
+     print(myFiles[[k]]) 
+     
+      #print(e)
+    }) #tryCatch
+  }
+}
+
+head(catch_in)
 
 ```
 
+catch_in contains common fish species, mode, area, year, month, ID_CODE, tot_catch
+
+
 
 ```{r}
+#make sure ID_CODE datatype matches both sides of join. 
 trip_in <- trip_in %>%
     mutate(ID_CODE=as.character(ID_CODE))
 
 catch_in <- catch_in %>%
-    mutate(ID_CODE=as.character(ID_CODE))
+    mutate(ID_CODE=as.character(ID_CODE), year=as.integer(YEAR))
 
-head(trip_in)
-head(catch_in)
-
+#Join trip and catch datasets, group by yea, month,common, mode, area. 
+#Then filter by year 1990-2020
 trip_catch <- inner_join(trip_in,catch_in,
           by = c("ID_CODE" = "ID_CODE")) %>%
-          group_by(YEAR.x,month.x,common,MODE_FX,AREA_X) %>%
+          group_by(year,month,common,MODE_FX,AREA_X) %>%
           summarize(catch_count = sum(tot_cat), .groups = 'drop') %>%
-          mutate(year=as.integer(YEAR.x),month=as.integer(month.x),catch_count=round(catch_count, digits = 0)) %>%
-          filter(catch_count > 0.0)
+          mutate(catch_count=round(catch_count, digits = 0)) %>%
+          filter(catch_count > 0.0, year >= "1990", year <= "2020")
 
-#view(trip_catch)
-
-
-
+head(trip_catch)
 
 ```
 
+trip_catch contains: Year, month, common (species), mode, area, catch_count
+
 ```{r}
-HAB_in <- read_csv("data/hab/Recent_Harmful_Algal_Bloom_(HAB)_Events.csv")
+#view(trip_catch)
+```
 
-#target <- c("Tom", "Lynn")
-#filter(dat, name %in% target)  # equivalently, dat %>% filter(name %in% target)
-#new_frame2 <- Mydata%>% filter( between(x, 3, 7) )
 
+```{r}
+myFiles <- list.files(path = habPath, pattern = "*.csv", all.files = FALSE,
+           full.names = TRUE, recursive = FALSE,
+           ignore.case = FALSE, include.dirs = FALSE, no.. = FALSE)
+
+HAB_in <- read.csv(myFiles[1]) %>% select(c(SAMPLE_DATE,LOCATION,COUNT_))
+
+#if there is more than 1 file, as is the case with multiple years and months, step through them all. 
+if (length(myFiles) > 1) {
+  for (k in 2:length(myFiles)){
+    HAB_in <- rbind(HAB_in,read.csv(myFiles[[k]]) %>% select(c(SAMPLE_DATE,LOCATION,COUNT_))) 
+  }
+}
+
+head(HAB_in)
+
+#Aggregate brevis_count for all monitors within the Sarasota area.
+#grouped by year, month.  
+#note that as more monitors were added over time, this will cause 
+#the total brevis count to increase over time.  
+#Scaling by the number of monitors might be helpful here. 
+#I'll try first without scaling.  
 HAB <- HAB_in %>%
   filter(str_detect(LOCATION,"Sarasota")) %>%
   mutate(date=as.Date(SAMPLE_DATE)) %>%
   mutate(month=as.integer(format(date, "%m")),year=as.integer(format(date,"%Y"))) %>%
   group_by(year,month) %>%
-  summarize(brevis_count = sum(COUNT_),.groups = "drop") %>%
-  filter(year=="2020")
+  summarize(brevis_count = sum(COUNT_),.groups = "drop") 
 
-#view(HAB)
-
+head(HAB)
 
 ```
 
+HAB_in contains date, location, brevis count.  We can't use exact date 
+because it isn't available in the MRIP data.  
+
+HAB contains brevis_count grouped by year & month.  Filtered by location.  
+
 ```{r}
+#Now join the two datasets HAB & MRIP on year and month.  
 
 HAB_MRIP <- inner_join(trip_catch,HAB,
            by = c("year" = "year","month" = "month")) %>%
@@ -94,10 +185,25 @@ HAB_MRIP <- inner_join(trip_catch,HAB,
             mutate(year=paste("year",as.character(year),sep = "_")) %>%
             mutate(month=paste("month",as.character(month),sep = "_"))
 
-#view(HAB_MRIP)
-fishies <- stringr::str_unique(HAB_MRIP$common)
-print(fishies[2])
-write.csv(HAB_MRIP,"data/sarasota.csv", row.names = FALSE)
+head(HAB_MRIP)
+#fishies <- stringr::str_unique(HAB_MRIP$common)
+write.csv(HAB_MRIP,"../data_out/sarasota.csv", row.names = FALSE)
 
+```
+
+Final dataset contains year (character), month (character), common, mode, area, catch_count, brevis count.  
+Note:  brevis_count is grouped by year and month.  Therefore it will repeat for common, mode, area variables. 
+There is no natural connection between brevis count and common species or fishing mode. 
+
+There could be a connection to area, but it would be a very difficult to connection to make. 
+I would have the figure out the distance from shore of each brevis monitor using GPS coordinates
+and match it to the area bin.  This is beyond the scope of this analysis. 
+
+During analysis, if I remove other variables and aggregate catch_count, I have 
+to be careful not to also aggregate brevis_count or I will be artificially inflating
+the number.  
+
+```{r}
+view(HAB_MRIP)
 ```
 
