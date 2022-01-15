@@ -165,7 +165,7 @@ HAB <- HAB_in %>%
   mutate(date=as.Date(SAMPLE_DATE)) %>%
   mutate(month=as.integer(format(date, "%m")),year=as.integer(format(date,"%Y"))) %>%
   group_by(year,month) %>%
-  summarize(brevis_count = sum(COUNT_),.groups = "drop") 
+  summarize(brevis_count = sum(COUNT_),mean_brevis_count = round(mean(COUNT_)),.groups = "drop") 
 
 head(HAB)
 
@@ -181,9 +181,10 @@ HAB contains brevis_count grouped by year & month.  Filtered by location.
 
 HAB_MRIP <- inner_join(trip_catch,HAB,
            by = c("year" = "year","month" = "month")) %>%
-           select(c(year,month,common,MODE_FX,AREA_X,catch_count,brevis_count)) %>%
-            mutate(year=paste("year",as.character(year),sep = "_")) %>%
-            mutate(month=paste("month",as.character(month),sep = "_"))
+           select(c(year,month,common,MODE_FX,AREA_X,catch_count,brevis_count,mean_brevis_count)) 
+            #mutate(year=paste("year",as.character(year),sep = "_")) %>%
+            #mutate(month=paste("month",as.character(month),sep = "_"))
+           
 
 head(HAB_MRIP)
 #fishies <- stringr::str_unique(HAB_MRIP$common)
@@ -204,6 +205,19 @@ to be careful not to also aggregate brevis_count or I will be artificially infla
 the number.  
 
 ```{r}
-view(HAB_MRIP)
+#create a compact dataset with year, month, catch_count, brevis_count. 
+
+HAB_MRIP_small <- HAB_MRIP %>%
+                  group_by(year,month,brevis_count,mean_brevis_count) %>%
+                  summarize(catch_count = sum(catch_count),.groups = "drop") %>%
+                  #add previous month brevis count 
+                  arrange(year,month) %>%
+                  mutate(previous_month_brevis=lag(brevis_count,n=1L,order_by=year,month,default=0)) %>%
+                  mutate(previous_month_mean_brevis=lag(mean_brevis_count,n=1L,order_by=year,month,default=0))
+
+
+head(HAB_MRIP_small)
+write.csv(HAB_MRIP_small,"../data_out/sarasota_year_month.csv", row.names = FALSE)
+
 ```
 
