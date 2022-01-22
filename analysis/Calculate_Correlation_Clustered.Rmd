@@ -1,0 +1,113 @@
+---
+title: Calculate Correlation
+summary:  This notebook is to calculate and display statisitcal significance.
+output: html_notebook
+---
+
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggpubr)
+```
+
+Import data from CSV.  See /wrangle/survey_Wrangle.Rmd for code used to 
+create the CSV.
+
+```{r}
+HAB_MRIP <- read.csv("../data_out/sarasota_clustered.csv")
+```
+
+```{r}
+head(HAB_MRIP)
+
+#http://www.sthda.com/english/wiki/wiki.php?id_contents=7312
+
+# x and y are numeric vectors with the same length
+
+cluster1 <- HAB_MRIP %>% filter(clust==1)
+cluster2 <- HAB_MRIP %>% filter(clust==2)
+cluster3 <- HAB_MRIP %>% filter(clust==3)
+cluster4 <- HAB_MRIP %>% filter(clust==4)
+cluster5 <- HAB_MRIP %>% filter(clust==5)
+```
+
+
+```{r}
+cor.test(cluster1$brevis_count, cluster1$catch_count, method=c("pearson", "kendall", "spearman")) #best
+cor.test(cluster2$brevis_count, cluster2$catch_count, method=c("pearson", "kendall", "spearman")) #worse than cluster 1.
+cor.test(cluster3$brevis_count, cluster3$catch_count, method=c("pearson", "kendall", "spearman"))#worse than cluster
+cor.test(cluster4$brevis_count, cluster4$catch_count, method=c("pearson", "kendall", "spearman")) #positive correlation
+cor.test(cluster5$brevis_count, cluster5$catch_count, method=c("pearson", "kendall", "spearman")) #worse than cluster 1
+
+
+
+
+```
+
+Looking at the calculations above, we see virtually no difference between total 
+brevis and mean brevis.  This means the number of monitors doesn't make 
+much difference at least not over the course of a month.  
+
+Using previous month brevis, the correlation gets worse meaning there is no
+delayed reaction to a red tide event.  At least not month over month.  
+If we had daily or weekly catch count data, we might see a better correlation 
+week over week, but we don't have this data.  
+
+
+```{r}
+#Plot Correltation coeffecient
+
+#http://www.sthda.com/english/wiki/correlation-test-between-two-variables-in-r
+
+ggscatter(HAB_MRIP_small, x = "brevis_count", y = "catch_count", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "K. brevis", ylab = "Game Fish Caught")
+
+```
+There is obviously a wide distribution of fish catch when K. brevis is zero.
+This signifies other factors which impact fish catch more than red tide.  
+However, I also notice that as K. brevis increases, there are few data points 
+with high fish catch counts.  
+
+What if we eliminate data where brevis count = 0? 
+
+```{r}
+
+summary(HAB_MRIP_small$catch_count)
+summary(HAB_MRIP_small$brevis_count)
+
+#ggplot(HAB_MRIP_small, aes(x=catch_count)) + geom_histogram(binwidth=.5)
+
+#remove_outliers <- HAB_MRIP_small %>% filter(brevis_count < 102821633, catch_count < 3000)
+remove_outliers <- HAB_MRIP_small %>% filter(catch_count < 3000)
+
+#http://www.sthda.com/english/wiki/correlation-test-between-two-variables-in-r
+
+ggscatter(filter(HAB_MRIP_small,catch_count < 3000), x = "brevis_count", y = "catch_count", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson", cor.coef.coord =c(102821633,2000),
+          xlab = "K. brevis", ylab = "Game Fish Caught", title="K. brevis vs catch count")
+
+ggscatter(filter(HAB_MRIP_small,catch_count < 3000,brevis_count < 102821633), x = "brevis_count", y = "catch_count", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson", cor.coef.coord =c(10282163,2000),
+          xlab = "K. brevis", ylab = "Game Fish Caught", title="K. brevis vs catch count")
+
+```
+
+```{r}
+head(HAB_MRIP_small)
+medium_to_high_brevis <- HAB_MRIP_small %>% filter(mean_brevis_count > 100000)
+head(medium_to_high_brevis)
+
+#http://www.sthda.com/english/wiki/correlation-test-between-two-variables-in-r
+
+ggscatter(medium_to_high_brevis, x = "brevis_count", y = "catch_count", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "K. brevis", ylab = "Game Fish Caught")
+
+```
+

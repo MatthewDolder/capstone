@@ -1,5 +1,8 @@
 ---
 survey_Wrangle.Rmd
+
+Step 1 of 4
+
 Summary: This notebook join three different CSV files
           1.  trip.csv which contains NOAA survey results for fishing trips.
               We need this because it contains AREA and we want to filter on the Sarasota bay area. 
@@ -33,7 +36,6 @@ habPath <- paste("../",DATA_DIR,"/hab/",sep="")
 ```{r}
 library(tidyverse)
 library(dplyr)
-#library(stringr)
 ```
 
 
@@ -41,7 +43,7 @@ library(dplyr)
 ```{r}
 
 #grab all trip files from survey dataset
-myFiles <- list.files(path = mripPath, pattern = "trip*", all.files = FALSE,
+myFiles <- list.files(path = mripPath, pattern = "trip_*", all.files = FALSE,
            full.names = TRUE, recursive = FALSE,
            ignore.case = FALSE, include.dirs = FALSE, no.. = FALSE)
 
@@ -70,10 +72,11 @@ trip_in ID_CODE filtered by AREA=J or "Sarasota Estuary."
 In the next section, we use ID_CODE to filter the catch data by area. 
 
 ```{r}
-myFiles <- list.files(path = mripPath, pattern = "catch*", all.files = FALSE,
+myFiles <- list.files(path = mripPath, pattern = "catch_*", all.files = FALSE,
            full.names = TRUE, recursive = FALSE,
            ignore.case = FALSE, include.dirs = FALSE, no.. = FALSE)
 
+head(myFiles)
 #catch_in <- read.csv(myFiles[1])
 
 #Initialize the dataset using the first file.  
@@ -102,7 +105,7 @@ if (length(myFiles) > 1) {
   }
 }
 
-head(catch_in)
+#view(catch_in)
 
 ```
 
@@ -143,16 +146,22 @@ myFiles <- list.files(path = habPath, pattern = "*.csv", all.files = FALSE,
            full.names = TRUE, recursive = FALSE,
            ignore.case = FALSE, include.dirs = FALSE, no.. = FALSE)
 
-HAB_in <- read.csv(myFiles[1]) %>% select(c(SAMPLE_DATE,LOCATION,COUNT_))
+HAB_in <- read.csv(myFiles[1]) %>% select(c(SAMPLE_DATE,LOCATION,LATITUDE,LONGITUDE,COUNT_))
 
 #if there is more than 1 file, as is the case with multiple years and months, step through them all. 
 if (length(myFiles) > 1) {
   for (k in 2:length(myFiles)){
-    HAB_in <- rbind(HAB_in,read.csv(myFiles[[k]]) %>% select(c(SAMPLE_DATE,LOCATION,COUNT_))) 
+    HAB_in <- rbind(HAB_in,read.csv(myFiles[[k]]) %>% select(c(SAMPLE_DATE,LOCATION,LATITUDE,LONGITUDE,COUNT_)))
   }
 }
 
 head(HAB_in)
+
+#filter_test <- HAB_in %>%
+  #filter(str_detect(LOCATION,"Sarasota")) %>%
+#  filter(LATITUDE>"27.3",LATITUDE<"27.5",LONGITUDE>"-82.4")
+
+#  view(filter_test)
 
 #Aggregate brevis_count for all monitors within the Sarasota area.
 #grouped by year, month.  
@@ -161,13 +170,13 @@ head(HAB_in)
 #Scaling by the number of monitors might be helpful here. 
 #I'll try first without scaling.  
 HAB <- HAB_in %>%
-  filter(str_detect(LOCATION,"Sarasota")) %>%
+  #filter(str_detect(LOCATION,"Sarasota")) %>%
+  filter(LATITUDE>"27.3",LATITUDE<"27.5",LONGITUDE>"-82.4") %>%
   mutate(date=as.Date(SAMPLE_DATE)) %>%
   mutate(month=as.integer(format(date, "%m")),year=as.integer(format(date,"%Y"))) %>%
   group_by(year,month) %>%
-  summarize(brevis_count = sum(COUNT_),mean_brevis_count = round(mean(COUNT_)),.groups = "drop") 
+  summarize(mean_brevis_count = round(mean(COUNT_)),.groups = "drop") 
 
-head(HAB)
 
 ```
 
@@ -177,11 +186,40 @@ because it isn't available in the MRIP data.
 HAB contains brevis_count grouped by year & month.  Filtered by location.  
 
 ```{r}
+#Get boundary coordinates for Google Earth:
+
+boundary <- HAB_in %>% filter(LATITUDE>"27.3",LATITUDE<"27.5",LONGITUDE>"-82.4")
+
+
+
+print("lower left")
+min(boundary$LATITUDE)
+max(boundary$LONGITUDE)
+#head(filter(boundary,LATITUDE==min(boundary$LATITUDE),LONGITUDE==max(boundary$LONGITUDE)))
+
+
+print("lower right")
+min(boundary$LATITUDE)
+min(boundary$LONGITUDE)
+
+print ("upper left")
+max(boundary$LATITUDE)
+max(boundary$LONGITUDE)
+
+print ("upper right")
+max(boundary$LATITUDE)
+min(boundary$LONGITUDE)
+
+
+```
+
+
+```{r}
 #Now join the two datasets HAB & MRIP on year and month.  
 
 HAB_MRIP <- inner_join(trip_catch,HAB,
            by = c("year" = "year","month" = "month")) %>%
-           select(c(year,month,common,MODE_FX,AREA_X,catch_count,brevis_count,mean_brevis_count)) 
+           select(c(year,month,common,MODE_FX,AREA_X,catch_count,mean_brevis_count)) 
             #mutate(year=paste("year",as.character(year),sep = "_")) %>%
             #mutate(month=paste("month",as.character(month),sep = "_"))
            
@@ -208,11 +246,10 @@ the number.
 #create a compact dataset with year, month, catch_count, brevis_count. 
 
 HAB_MRIP_small <- HAB_MRIP %>%
-                  group_by(year,month,brevis_count,mean_brevis_count) %>%
+                  group_by(year,month,mean_brevis_count) %>%
                   summarize(catch_count = sum(catch_count),.groups = "drop") %>%
                   #add previous month brevis count 
                   arrange(year,month) %>%
-                  mutate(previous_month_brevis=lag(brevis_count,n=1L,order_by=year,month,default=0)) %>%
                   mutate(previous_month_mean_brevis=lag(mean_brevis_count,n=1L,order_by=year,month,default=0))
 
 

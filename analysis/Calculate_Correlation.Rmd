@@ -19,26 +19,82 @@ HAB_MRIP <- read.csv("../data_out/sarasota.csv")
 HAB_MRIP_small <- read.csv("../data_out/sarasota_year_month.csv")
 ```
 
+
+
+
+```{r}
+summary(HAB_MRIP_small$mean_brevis_count)
+summary(HAB_MRIP_small$catch_count)
+
+
+```
+
+```{r}
+#https://www.statmethods.net/graphs/density.html
+# Add a Normal Curve (Thanks to Peter Dalgaard)
+x <- HAB_MRIP_small$catch_count
+h<-hist(x, breaks=10, col="red", xlab="MRIP Catch Count",
+   main="MRIP Catch Distribution")
+xfit<-seq(min(x),max(x),length=40)
+yfit<-dnorm(xfit,mean=mean(x),sd=sd(x))
+yfit <- yfit*diff(h$mids[1:2])*length(x)
+lines(xfit, yfit, col="blue", lwd=2) 
+
+
+```
+```{r}
+x <- HAB_MRIP_small$brevis_count
+h<-hist(x, breaks=10, col="red", xlab="HAB Mean Brevis Count",
+   main="HAB Distribution")
+xfit<-seq(min(x),max(x),length=40)
+yfit<-dnorm(xfit,mean=mean(x),sd=sd(x))
+yfit <- yfit*diff(h$mids[1:2])*length(x)
+lines(xfit, yfit, col="blue", lwd=2) 
+```
+```{r}
+count(HAB_MRIP_small %>% filter(brevis_count<1000))
+```
+
+
 ```{r}
 head(HAB_MRIP_small)
+
+#Plot Correltation coeffecient
+
+#http://www.sthda.com/english/wiki/correlation-test-between-two-variables-in-r
+
+ggscatter(HAB_MRIP_small, x = "brevis_count", y = "catch_count", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "K. brevis", ylab = "Game Fish Caught")
 
 #http://www.sthda.com/english/wiki/wiki.php?id_contents=7312
 
 # x and y are numeric vectors with the same length
-cor.test(HAB_MRIP_small$brevis_count, HAB_MRIP_small$catch_count, method=c("pearson", "kendall", "spearman"))
 
-remove_outliers <- HAB_MRIP_small %>% filter(catch_count < 600)
 
+remove_outliers <- HAB_MRIP_small %>% filter(catch_count < 3000)
+
+#Test 1
 cor.test(remove_outliers$brevis_count, remove_outliers$catch_count, method=c("pearson", "kendall", "spearman"))
-
-#test mean_brevis_count
-cor.test(HAB_MRIP_small$mean_brevis_count, HAB_MRIP_small$catch_count, method=c("pearson", "kendall", "spearman"))  #nearly the same
-
-#Test previous month total and mean
-cor.test(HAB_MRIP_small$previous_month_brevis, HAB_MRIP_small$catch_count, method=c("pearson", "kendall", "spearman"))  #nearly the same
-cor.test(HAB_MRIP_small$previous_month_mean_brevis, HAB_MRIP_small$catch_count, method=c("pearson", "kendall", "spearman"))  #nearly the same
+```
 
 
+```{r}
+#test 2.  mean_brevis_count
+cor.test(remove_outliers$mean_brevis_count, remove_outliers$catch_count, method=c("pearson", "kendall", "spearman"))  #nearly the same
+```
+
+
+```{r}
+#Test previous month 
+cor.test(remove_outliers$previous_month_mean_brevis, remove_outliers$catch_count, method=c("pearson", "kendall", "spearman"))  #nearly the same
+
+```
+```{r}
+#Test without high catch count
+tight <- HAB_MRIP_small %>% filter(catch_count < 600,brevis_count > 0)
+cor.test(tight$mean_brevis, tight$catch_count, method=c("pearson", "kendall", "spearman"))
 ```
 
 Looking at the calculations above, we see virtually no difference between total 
@@ -52,14 +108,15 @@ week over week, but we don't have this data.
 
 
 ```{r}
-#Plot Correltation coeffecient
+#Plot Correlation coeffecient
 
 #http://www.sthda.com/english/wiki/correlation-test-between-two-variables-in-r
 
-ggscatter(HAB_MRIP_small, x = "brevis_count", y = "catch_count", 
+ggscatter(remove_outliers, x = "brevis_count", y = "catch_count", 
           add = "reg.line", conf.int = TRUE, 
           cor.coef = TRUE, cor.method = "pearson",
-          xlab = "K. brevis", ylab = "Game Fish Caught")
+          xlab = "Aggregate K. brevis", ylab = "Game Fish Caught", title="Pearson's Correllation - Catch vs Brevis",
+          add.params = list(color = "blue", fill = "lightgray"),cor.coef.coord =c(102821633,2000))
 
 ```
 There is obviously a wide distribution of fish catch when K. brevis is zero.
@@ -76,17 +133,21 @@ summary(HAB_MRIP_small$brevis_count)
 
 #ggplot(HAB_MRIP_small, aes(x=catch_count)) + geom_histogram(binwidth=.5)
 
-remove_outliers <- HAB_MRIP_small %>% filter(catch_count < 600)
-
+remove_outliers <- HAB_MRIP_small %>% filter(catch_count < 600,brevis_count > 0)
+head(remove_outliers)
 
 
 #http://www.sthda.com/english/wiki/correlation-test-between-two-variables-in-r
 
-ggscatter(remove_outliers, x = "brevis_count", y = "catch_count", 
-          add = "reg.line", conf.int = TRUE, 
-          cor.coef = TRUE, cor.method = "pearson", cor.coef.coord =c(400000000,400),
-          xlab = "K. brevis", ylab = "Game Fish Caught")
+#Plot Correlation coeffecient
 
+#http://www.sthda.com/english/wiki/correlation-test-between-two-variables-in-r
+
+ggscatter(remove_outliers, x = "mean_brevis_count", y = "catch_count", 
+          add = "reg.line", conf.int = TRUE, 
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "Mean K. brevis", ylab = "Game Fish Caught", title="Pearson's Correllation - Catch vs Brevis",
+          add.params = list(color = "blue", fill = "lightgray"),cor.coef.coord =c(4999000,500))
 ```
 
 ```{r}
