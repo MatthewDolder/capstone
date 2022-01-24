@@ -16,6 +16,8 @@ Contains code used to analyse the output data.
 
 ### /data_sample/
 Two months worth of raw data in csv format.  Jan-Feb 2020.  The full dataset is 30 years and too much to upload to Github. The full dataset can be downloaded from the sources listed below.  
+See comment `#un-comment this line in test mode` in /wrangle/survey_Wrangle.Rmd
+
 #### /data_sample/mrip
 MRIP catch survey data. Courtesy: NOAA Fisheries. (NOAA 2021)
 
