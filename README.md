@@ -1,7 +1,7 @@
 # Project: Effect of Red Tide on Florida Gulf Coast Game Fishing
 ### Matthew Dolder
 ### January 6, 2022
-### Last Updated: January 6, 2022
+### Last Updated: January 24, 2022
 
 ## Summary
 This repository contains code and data used in the WGU capstone project entitled *Effect of Red Tide on Florida Gulf Coast Game Fishing*
