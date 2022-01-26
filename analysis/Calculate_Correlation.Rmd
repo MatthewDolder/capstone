@@ -89,43 +89,5 @@ This signifies other factors which impact fish catch more than red tide.
 However, I also notice that as K. brevis increases, there are few data points 
 with high fish catch counts.  
 
-What if we eliminate data where brevis count = 0? 
 
-```{r}
-
-summary(HAB_MRIP_small$catch_count)
-summary(HAB_MRIP_small$brevis_count)
-
-#ggplot(HAB_MRIP_small, aes(x=catch_count)) + geom_histogram(binwidth=.5)
-
-remove_outliers <- HAB_MRIP_small %>% filter(catch_count < 600,brevis_count > 0)
-head(remove_outliers)
-
-
-#http://www.sthda.com/english/wiki/correlation-test-between-two-variables-in-r
-
-#Plot Correlation coeffecient
-
-#http://www.sthda.com/english/wiki/correlation-test-between-two-variables-in-r
-
-ggscatter(remove_outliers, x = "mean_brevis_count", y = "catch_count", 
-          add = "reg.line", conf.int = TRUE, 
-          cor.coef = TRUE, cor.method = "pearson",
-          xlab = "Mean K. brevis", ylab = "Game Fish Caught", title="Pearson's Correllation - Catch vs Brevis",
-          add.params = list(color = "blue", fill = "lightgray"),cor.coef.coord =c(4999000,500))
-```
-
-```{r}
-head(HAB_MRIP_small)
-medium_to_high_brevis <- HAB_MRIP_small %>% filter(mean_brevis_count > 100000)
-head(medium_to_high_brevis)
-
-#http://www.sthda.com/english/wiki/correlation-test-between-two-variables-in-r
-
-ggscatter(medium_to_high_brevis, x = "brevis_count", y = "catch_count", 
-          add = "reg.line", conf.int = TRUE, 
-          cor.coef = TRUE, cor.method = "pearson",
-          xlab = "K. brevis", ylab = "Game Fish Caught")
-
-```
 

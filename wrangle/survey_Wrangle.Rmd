@@ -155,20 +155,8 @@ if (length(myFiles) > 1) {
   }
 }
 
-head(HAB_in)
 
-#filter_test <- HAB_in %>%
-  #filter(str_detect(LOCATION,"Sarasota")) %>%
-#  filter(LATITUDE>"27.3",LATITUDE<"27.5",LONGITUDE>"-82.4")
 
-#  view(filter_test)
-
-#Aggregate brevis_count for all monitors within the Sarasota area.
-#grouped by year, month.  
-#note that as more monitors were added over time, this will cause 
-#the total brevis count to increase over time.  
-#Scaling by the number of monitors might be helpful here. 
-#I'll try first without scaling.  
 HAB <- HAB_in %>%
   #filter(str_detect(LOCATION,"Sarasota")) %>%
   filter(LATITUDE>"27.3",LATITUDE<"27.5",LONGITUDE>"-82.4") %>%
@@ -176,7 +164,7 @@ HAB <- HAB_in %>%
   mutate(month=as.integer(format(date, "%m")),year=as.integer(format(date,"%Y"))) %>%
   group_by(year,month) %>%
   summarize(mean_brevis_count = round(mean(COUNT_)),.groups = "drop") 
-
+head(HAB)
 
 ```
 
